@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: apache2-mnt
+  namespace: web-servers
+  labels:
+    type: nfs
+spec:
+  capacity:
+    storage: 350Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: 10.224.22.22
+    path: "/share"

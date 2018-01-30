@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sonatype-work
+  namespace: nexus
+  labels:
+    type: nfs
+spec:
+  capacity:
+    storage: 15Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: 10.224.22.22
+    path: "/share/nexus/sonatype-work"

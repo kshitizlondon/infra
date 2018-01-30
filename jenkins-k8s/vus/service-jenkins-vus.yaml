@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-vus
+  namespace: build-services
+spec:
+  ports:
+  - port: 8085
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: jenkins-vus
+  sessionAffinity: None
+  type: LoadBalancer
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: jenkins-vus
+  namespace: build-services
+spec:
+  backend:
+    serviceName: jenkins-vus
+    servicePort: 8085
+

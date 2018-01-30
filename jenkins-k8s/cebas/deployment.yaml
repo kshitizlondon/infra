@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jenkins-cebas
+  namespace: build-services
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: jenkins-cebas
+    spec:
+      containers:
+      - name: jenkins-cebas
+        image: jenkins
+        ports:
+          - name: jenkins-cebas
+            containerPort: 8080
+        #env:
+        #- name: JENKINS_OPTS
+        #  value: --prefix=/jenkins-infrastructure
+        volumeMounts:
+        - mountPath: /var/jenkins_home
+          name: jenkins-home
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1500Mi
+          requests:
+            cpu: 500m
+            memory: 1500Mi
+      volumes:
+      - name: jenkins-home
+        persistentVolumeClaim:
+          claimName: jenkins-cebas-home
+      restartPolicy: Always

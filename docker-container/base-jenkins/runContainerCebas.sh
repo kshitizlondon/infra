@@ -1,0 +1,1 @@
+docker run -d --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker -p 8086:8080 -v /var/jenkins/cebas:/var/jenkins_home --name jenkins-cebas1 jenkins-docker

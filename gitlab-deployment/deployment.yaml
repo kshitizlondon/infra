@@ -1,0 +1,83 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: gitlab
+  namespace: gitlab
+  labels:
+    app: gitlab
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gitlab
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: gitlab
+        image: gitlab/gitlab-ce
+        env:
+        ## General GitLab Configs
+        ##
+        # This is a free-form env var that GitLab Omnibus uses to configure
+        # everything. We're passing this in from a configmap and pulling some
+        # of the values from the env vars defined below. This is done to
+        # avoid leaving secrets visible in kubectl.
+        # -----Uncomment next 5 lines to use config map-----
+        #- name: GITLAB_OMNIBUS_CONFIG
+        #  valueFrom:
+        #    configMapKeyRef:
+        #      name: gitlab
+        #      key: gitlab_omnibus_config
+        - name: external_url
+          value: 'http://10.224.22.17:10080'
+        ports:
+        - name: ssh
+          containerPort: 10022
+        - name: http
+          containerPort: 10080
+        - name: https
+          containerPort: 10443
+        livenessProbe:
+          httpGet:
+            path: /help
+            port: http
+          # This pod takes a very long time to start up. Be cautious when
+          # lowering this value to avoid Pod death during startup.
+          initialDelaySeconds: 200
+          timeoutSeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 10
+        readinessProbe:
+          httpGet:
+            path: /help
+            port: http
+          initialDelaySeconds: 60
+          timeoutSeconds: 1
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        volumeMounts:
+        - name: gitlab-etc
+          mountPath: /etc/gitlab
+        - name: gitlab-data
+          mountPath: /var/opt/gitlab
+        - name: gitlab-logs
+          mountPath: /var/log/gitlab
+        - name: gitlab-logs-reconfigure
+          mountPath: /var/log/gitlab/reconfigure
+        resources:
+      volumes:
+      - name: gitlab-etc
+        persistentVolumeClaim:
+            claimName: gitlab-etc
+      - name: gitlab-data
+        persistentVolumeClaim:
+            claimName: gitlab-data
+      - name: gitlab-logs
+        persistentVolumeClaim:
+            claimName: gitlab-logs
+      - name: gitlab-logs-reconfigure
+        persistentVolumeClaim:
+            claimName: gitlab-logs-reconfigure

@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-cebas
+  namespace: build-services
+spec:
+  ports:
+  - port: 8086
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: jenkins-cebas
+  sessionAffinity: None
+  type: LoadBalancer
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: jenkins-cebas
+  namespace: build-services
+spec:
+  backend:
+    serviceName: jenkins-cebas
+    servicePort: 8086
+

@@ -1,0 +1,1 @@
+docker run --name=wascontainer --add-host ntt-rvs-dev2.local:127.0.0.1 -d -v data:/opt/IBM/WebSphere/Profiles/base/logs/base_cluster_member_0_0 -p 9081:9081 -p 9043:9043 -p 7777:7777 ibm-was-PAI5.0.6:1.0

@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: apache2
+  namespace: web-servers
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: apache2
+    spec:
+      containers:
+      - name: apache2
+        image: theodotos/ubuntu-lamp
+        ports:
+          - name: http
+            containerPort: 80
+          - name: https
+            containerPort: 443
+        volumeMounts:
+        - mountPath: /var/www/html
+          name: apache2-www
+        - mountPath: /etc/apache2
+          name: apache2-logs
+      volumes:
+      - name: apache2-www
+        persistentVolumeClaim:
+          claimName: apache2-www
+      - name: apache2-logs
+        persistentVolumeClaim:
+          claimName: apache2-logs
+      restartPolicy: Always

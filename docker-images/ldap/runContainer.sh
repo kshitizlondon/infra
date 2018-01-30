@@ -1,0 +1,1 @@
+docker run --name ldap -p 10389:10389 -p 10636:10636 -v data:/ldap/instances/ ldap:1.0

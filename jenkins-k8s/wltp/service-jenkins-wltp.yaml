@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-wltp
+  namespace: build-services
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: jenkins-wltp
+  sessionAffinity: None
+  type: LoadBalancer
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: jenkins-wltp
+  namespace: build-services
+spec:
+  backend:
+    serviceName: jenkins-wltp
+    servicePort: 8080
+

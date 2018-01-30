@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jenkins-swt
+  namespace: build-services
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: jenkins-swt
+    spec:
+      containers:
+      - name: jenkins-swt
+        image: jenkins
+        ports:
+          - name: jenkins-swt
+            containerPort: 8080
+          - name: jenkins-slave
+            containerPort: 50000
+        #env:
+        #- name: JENKINS_OPTS
+        #  value: --prefix=/jenkins-infrastructure
+        volumeMounts:
+        - mountPath: /var/jenkins_home
+          name: jenkins-home
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1500Mi
+          requests:
+            cpu: 500m
+            memory: 1500Mi
+      volumes:
+      - name: jenkins-home
+        persistentVolumeClaim:
+          claimName: jenkins-swt-home
+      restartPolicy: Always

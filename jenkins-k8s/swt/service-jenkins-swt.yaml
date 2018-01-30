@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-swt
+  namespace: build-services
+spec:
+  ports:
+  - port: 8088
+    name: master
+    protocol: TCP
+    targetPort: 8080
+  - port: 50000
+    name: agent
+    protocol: TCP
+    targetPort: 50000
+  selector:
+    app: jenkins-swt
+  sessionAffinity: None
+  type: LoadBalancer
+
+---
+#apiVersion: extensions/v1beta1
+#kind: Ingress
+#metadata:
+#  name: jenkins-infrastructure
+#  namespace: build-services
+#spec:
+#  backend:
+#    serviceName: jenkins-infrastructure
+#    servicePort: 8090
+

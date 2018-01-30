@@ -1,0 +1,6 @@
+example call to map repo and source code:
+
+docker.image('ibm-jdk-1.7.sr9-maven-3.3.9').inside("-v ${WORKSPACE_DIR}/${JOB_NAME}/repo:/mvn-repo -v ${WORKSPACE_DIR}/${JOB_NAME}:/build") {
+	sh 'mvn clean install'
+} 
+

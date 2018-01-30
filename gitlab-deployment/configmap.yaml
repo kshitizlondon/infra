@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gitlab
+  namespace: gitlab
+  labels:
+    app: gitlab
+data:
+  ## This is used by GitLab Omnibus as the primary means of configuration.
+  ## ref: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/files/gitlab-config-template/gitlab.rb.template
+  ##
+  gitlab_omnibus_config: |
+    external_url 'http://10.224.22.17:10080'
+    prometheus_monitoring['enable'] = false
+    prometheus['enable'] = false
+    prometheus['monitor_kubernetes'] = false
+    gitlab_rails['ldap_enabled'] = true
+    gitlab_rails['ldap_servers'] = YAML.load <<-'EOS'
+    main: # 'main' is the GitLab 'provider ID' of this LDAP server
+    label: 'LDAP'
+    host: '10.224.22.6'
+    port: 10389
+    uid: 'uid'
+    method: 'plain' # "tls" or "ssl" or "plain"
+    bind_dn: 'uid=admin,ou=system'
+    password: 'secret'
+    active_directory: false
+    allow_username_or_email_login: true
+    block_auto_created_users: false
+    base: 'ou=users,dc=ddn,dc=nttdata,dc=com'
+    user_filter: '(objectclass=inetOrgPerson)'
+    attributes:
+    username: ['uid']
+    email: ['mail']
+    name: 'cn'
+    first_name: 'givenName'
+    last_name: 'sn'
+    EOS

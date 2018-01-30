@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sonar
+  namespace: sonar
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: sonar
+      labels:
+        name: sonar
+    spec:
+      containers:
+        - image: sonarqube:6.2
+          args:
+            - -Dsonar.web.context=/
+          name: sonar
+          env:
+            - name: SONARQUBE_JDBC_URL
+              value: jdbc:postgresql://sonar-postgres:5432/sonar
+          ports:
+            - containerPort: 9000
+              name: sonar
+          volumeMounts:
+            - name: conf
+              mountPath: /opt/sonarqube/conf
+            - name: data
+              mountPath: /opt/sonarqube/data
+            - name: extensions
+              mountPath: /opt/sonarqube/extensions
+      volumes:
+        - name: conf
+          persistentVolumeClaim:
+            claimName: conf
+        - name: data
+          persistentVolumeClaim:
+            claimName: data
+        - name: extensions
+          persistentVolumeClaim:
+            claimName: extensions

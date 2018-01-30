@@ -1,0 +1,62 @@
+node {
+	stage('checkout') {
+		checkout scm
+	}
+	stage('ubuntu-base-16.04') {
+		dir('./docker-images/ubuntu-base-16.04/') {
+			sh 'ls -al'
+			sh 'chmod +x docker-build.sh'
+			sh './docker-build.sh'
+		}
+    }
+	stage('ibm-jdk-1.6.sr16-32-maven-3.2.5') {
+		dir('./docker-images/ibm-jdk-1.6.sr16-32-maven-3.2.5/') {
+			sh 'ls -al'
+			sh 'chmod +x docker-build.sh'
+			sh './docker-build.sh'
+		}
+    }
+	stage('ibm-jdk-1.6.sr8-maven-3.2.5') {
+		dir('./docker-images/ibm-jdk-1.6.sr8-maven-3.2.5/') {
+			sh 'ls -al'
+			sh 'chmod +x docker-build.sh'
+			sh './docker-build.sh'
+		}
+    }
+    stage('ibm-jdk-1.6.sr8-maven-3.2.5-nodejs6') {
+		dir('./docker-images/ibm-jdk-1.6.sr8-maven-3.2.5-nodejs6/') {
+			sh 'ls -al'
+			sh 'chmod +x docker-build.sh'
+			sh './docker-build.sh'
+		}
+    }
+	stage('ibm-jdk-1.7.sr9-maven-3.3.9') {
+		dir('./docker-images/ibm-jdk-1.7.sr9-maven-3.3.9/') {
+			sh 'ls -al'
+			sh 'chmod +x docker-build.sh'
+			sh './docker-build.sh'
+		}
+    }
+	stage('ibm-jdk-1.8.sr4-maven-3.3.9') {
+		dir('./docker-images/ibm-jdk-1.8.sr4-maven-3.3.9/') {
+			sh 'ls -al'
+			sh 'chmod +x docker-build.sh'
+			sh './docker-build.sh'
+		}
+    }
+
+	stage('ibm-was-PAI5.0.6') {
+		dir('./docker-images/ibm-was-PAI5.0.6/') {
+			sh 'ls -al'
+			sh 'chmod +x docker-build.sh'
+			sh './docker-build.sh'
+		}
+    }
+
+	stage('jenkins-base') {
+		dir('./docker-container/base-jenkins/') {
+			sh 'ls -al'
+			sh 'chmod +x buildContainer.sh'
+			sh './buildContainer.sh'
+		}
+    }
