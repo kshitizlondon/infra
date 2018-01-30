@@ -1,5 +1,5 @@
 /**
- * This pipeline will run a Infra images build
+ * This pipeline runs an Infra images build
  */
 
 podTemplate(label: 'jenkins-slave',
@@ -26,8 +26,7 @@ podTemplate(label: 'jenkins-slave',
 	    }
       }
     }
-    
-  /*  
+      
     stage('ibm-jdk-1.6.sr16-32-maven-3.2.5') {
       container('docker') {
         dir('./docker-images/ibm-jdk-1.6.sr16-32-maven-3.2.5/') {
@@ -39,7 +38,7 @@ podTemplate(label: 'jenkins-slave',
         }
       }
     }
-  */
+ 
     stage('ibm-jdk-1.6.sr8-maven-3.2.5') {
       container('docker') {
         dir('./docker-images/ibm-jdk-1.6.sr8-maven-3.2.5/') {
@@ -63,7 +62,7 @@ podTemplate(label: 'jenkins-slave',
         }
       }
     }
-/*
+
     stage('ibm-jdk-1.7.sr9-maven-3.3.9') {
       container('docker') {
         dir('./docker-images/ibm-jdk-1.7.sr9-maven-3.3.9/') {
@@ -75,8 +74,7 @@ podTemplate(label: 'jenkins-slave',
         }
       }
     }
-*/
-/*
+
     stage('ibm-jdk-1.8.sr4-maven-3.3.9') {
       container('docker') {
         dir('./docker-images/ibm-jdk-1.8.sr4-maven-3.3.9/') {
@@ -88,7 +86,7 @@ podTemplate(label: 'jenkins-slave',
         }
       }
     }
-*/
+	  
     stage('ibm-was-PAI5.0.6') {
       container('docker') {
         dir('./docker-images/ibm-was-PAI5.0.6/') {
